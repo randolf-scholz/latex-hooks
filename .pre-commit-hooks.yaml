@@ -1,0 +1,127 @@
+# Custom hooks for pre-commit.
+
+# region pygrep ------------------------------------------------------------------------
+# NOTE: This regex checks comments begin with a `#`, `%`, `//` (padded to length 2)
+#   The first group is 0-82 or 84-unlimited characters
+#   The construction `([-=—─═])\2{2}` checks for a separator character repeated 3 times
+#   If the first group matches ≥84 characters, then the line is overlong (2+84+3=89 characters)
+#   If it matches ≤82 characters, then the line is too short, given that it is detected as a separator.
+#   (2 + 83 characters + separator + separator + separator = 88 characters)
+# NOTE: The second group is a separator character, we consider the characters:
+# `-` (U+002D: Hyphen-Minus)
+# `=` (U+003D: Equals Sign)
+# `—` (U+2014: Em Dash)
+# `═` (U+2550: Box Drawings Double Horizontal)
+# `─` (U+2500: Box Drawings Light Horizontal)
+- id: check-separator-length-88
+  name: check-separator-length-88
+  description: "Check that “horizontal rule” comments are the right length (88)."
+  entry: '^(\#.|\%.|\/\/)(.{0,77}|.{79,})([-=\\u2500-\\u257F])\3{7}$'
+  language: pygrep
+  types: [text]
+- id: check-separator-length-80
+  name: check-separator-length-80
+  description: "Check that “horizontal rule” comments are the right length (80)."
+  language: pygrep
+  entry: '^(\#.|\%.|\/\/)(.{0,69}|.{71})([-=\\u2500-\\u257F])\3{7}$'
+- id: check-separator-length-100
+  name: check-separator-length-100
+  description: "Check that “horizontal rule” comments are the right length (100)."
+  language: pygrep
+  entry: '^(\#.|\%.|\/\/)(.{0,89}|.{91})([-=\\u2500-\\u257F])\3{7}$'
+- id: check-separator-length-120
+  name: check-separator-length-120
+  description: "Check that “horizontal rule” comments are the right length (120)."
+  language: pygrep
+  entry: '^(\#.|\%.|\/\/)(.{0,109}|.{111})([-=\\u2500-\\u257F])\3{7}$'
+# endregion pygrep ---------------------------------------------------------------------
+
+# region latex -------------------------------------------------------------------------
+- id: chktex
+  name: chktex
+  language: system
+  types: [tex]
+  description: "ChkTeX, a LaTeX semantic checker."
+  entry: "chktex --format='%f:%l:%c %m [%k %n]\n' --quiet"
+  require_serial: true # Otherwise, we get lot's of warning about failed regex compilations
+  args: # default configuration
+    - "--erroron=all"
+    - "--nowarn=1" # Command terminated with space.
+    - "--nowarn=3" # Enclose previous parentheses with `{}`.
+    - "--nowarn=9" # ‘%s’ expected, found ‘%s’.
+    - "--nowarn=17" # Number of ‘character’ doesn't match the number of ‘character’.
+    - "--nowarn=19" # You should use `’` (ASCII 39) instead of `’` (ASCII 180).
+    - "--nowarn=21" # This command might not be intended.
+    - "--nowarn=22" # Comment displayed.
+    - "--nowarn=30" # Multiple spaces detected in output.
+    - "--nowarn=46" # Use `\(...\)` instead of `$...$`.
+- id: lacheck
+  name: lacheck
+  description: "A consistency checker for LaTeX documents."
+  pass_filenames: true
+  require_serial: true
+  language: script
+  types: [tex]
+  files: '\.tex$' # skip .sty and .cls files
+  entry: src/lacheck_wrapper.sh
+# endregion latex ----------------------------------------------------------------------
+
+# region latex-lint-modern -------------------------------------------------------------
+- id: latex-avoid-def
+  name: 'Avoid usage of `\def`.'
+  description: 'Use `\NewDocumentCommand` instead of `\def`.'
+  entry: '\\def\s*\\[^\d]\w*\s*\{' # excludes \def\0 and \def\internal@command...
+  language: pygrep
+  types: [tex]
+- id: latex-avoid-let
+  name: 'Avoid usage of `\let`.'
+  description: 'Use `\NewCommandCopy` instead of `\let`.'
+  language: pygrep
+  entry: '\\let\s*\\[^\d]\w*\s*\{' # excludes \def\0 and \def\internal@command...
+  types: [tex]
+- id: latex-avoid-newcommand
+  name: 'Avoid usage of `\newcommand`.'
+  description: 'Use `\NewDocumentCommand` instead of `\newcommand` and `\DeclareRobustCommand`.'
+  language: pygrep
+  entry: '\\((|re)newcommand|DeclareRobustCommand)\b'
+  types: [tex]
+- id: latex-avoid-legacy-options
+  name: 'Avoid usage of `\DeclareOption`.'
+  description: 'Use `\DeclareKeys` instead of legacy options system (see usrguide/clsguide).'
+  language: pygrep
+  entry: '\\(DeclareOption|CurrentOption|OptionNotUsed|ProcessOptions|ExecuteOptions)\b'
+- id: latex-avoid-double-dollar
+  name: latex-avoid-double-dollar
+  description: 'Use `\[` and `\]` or an enviroment instead of `$$`.'
+  language: pygrep
+  types: [tex]
+  entry: '\$\$'
+# endregion latex-lint-modern ----------------------------------------------------------
+
+# region latex-lint-extra --------------------------------------------------------------
+- id: latex-avoid-makeatletter
+  name: latex-avoid-makeatletter
+  description: 'Using `\makeatletter` is unnecessary inside `.sty` and `.cls` files.'
+  language: pygrep
+  types: [tex]
+  files: '\.(sty|cls)$'
+  entry: '\\makeat(letter|other)\b'
+- id: latex-avoid-manual-spacing
+  name: latex-avoid-manual-spacing
+  description: "Checks for the presence of manual spacing commands."
+  language: pygrep
+  types: [tex]
+  entry: '\\[!,.:>;]'
+- id: latex-use-label-convention
+  name: latex-use-label-convention
+  description: 'Checks if labels are of the form \label{<tag>:<name>}'
+  language: pygrep
+  types: [tex]
+  entry: '\\label\{(?![a-z]+:[a-z0-9_]+\})'
+- id: latex-use-textoids
+  name: latex-use-textoids
+  description: 'Consider defining a command instead of `^\text{...}`.'
+  language: pygrep
+  types: [tex]
+  entry: '[\_\^]\{?\\text\{\S*\w\}|\\text\{\S*\w\}[\(\[\{\\]'
+# endregion latex-lint-extra -----------------------------------------------------------
