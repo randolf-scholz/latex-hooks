@@ -12,12 +12,12 @@ A collection of pre-commit hooks for $\LaTeX$ projects.
 - [`lacheck`](docs/lacheck.md): Wrapper for the [`lacheck`](https://ctan.org/pkg/lacheck) $\LaTeX$ linter with opinionated defaults.
 
 - [`latex-lint-modern`](docs/modern.md): Hooks that check that modern $\LaTeX$ practices are followed.
+  - [`latex-avoid-obsolete-packages`](docs/modern.md#avoid-obsolete-packages)
   - [`latex-avoid-def`](docs/modern.md#avoid-def)
   - [`latex-avoid-let`](docs/modern.md#avoid-let)
   - [`latex-avoid-newcommand`](docs/modern.md#avoid-newcommand)
   - [`latex-avoid-legacy-options`](docs/modern.md#avoid-legacy-options)
   - [`latex-avoid-double-dollar`](docs/modern.md#avoid-double-dollar)
-  - [`latex-avoid-xparse`](docs/modern.md#avoid-xparse)
 - [`latex-lint-extra`](docs/extra.md): Additional hooks for opinionated $\LaTeX$ style.
   - [`latex-avoid-makeatletter`](docs/extra.md#avoid-makeatletter)
   - [`latex-avoid-manual-spacing`](docs/extra.md#avoid-manual-spacing)
