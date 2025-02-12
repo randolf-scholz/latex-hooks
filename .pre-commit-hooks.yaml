@@ -81,9 +81,9 @@
   types: [tex]
 - id: latex-avoid-newcommand
   name: '[tex] Avoid usage of `\newcommand`.'
-  description: 'Use `\NewDocumentCommand` instead of `\newcommand` and `\DeclareRobustCommand`.'
+  description: 'Use `\NewDocumentCommand` instead of `\newcommand` or `\DeclareRobustCommand`.'
   language: pygrep
-  entry: '\\((|re)newcommand|DeclareRobustCommand)\b'
+  entry: '\\((new|renew|provide)command|DeclareRobustCommand)\b'
   types: [tex]
 - id: latex-avoid-legacy-options
   name: '[tex] Avoid usage of `\DeclareOption`.'
@@ -91,7 +91,7 @@
   language: pygrep
   entry: '\\(DeclareOption|CurrentOption|OptionNotUsed|ProcessOptions|ExecuteOptions)\b'
 - id: latex-avoid-double-dollar
-  name: '[tex] Avoid usage of "$$".'
+  name: '[tex] Avoid usage of `$$`.'
   description: 'Use `\[` and `\]` or an enviroment instead of `$$`.'
   language: pygrep
   types: [tex]
