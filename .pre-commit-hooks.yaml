@@ -13,24 +13,24 @@
 # `—` (U+2014: Em Dash)
 # `═` (U+2550: Box Drawings Double Horizontal)
 # `─` (U+2500: Box Drawings Light Horizontal)
+- id: check-separator-length-80
+  name: '[text] Check separator length is 80.'
+  description: "Check that “horizontal rule” comments are the right length (80)."
+  language: pygrep
+  entry: '^(\#.|\%.|\/\/)(.{0,69}|.{71})([-=\\u2500-\\u257F])\3{7}$'
 - id: check-separator-length-88
-  name: check-separator-length-88
+  name: '[text] Check separator length is 88.'
   description: "Check that “horizontal rule” comments are the right length (88)."
   entry: '^(\#.|\%.|\/\/)(.{0,77}|.{79,})([-=\\u2500-\\u257F])\3{7}$'
   language: pygrep
   types: [text]
-- id: check-separator-length-80
-  name: check-separator-length-80
-  description: "Check that “horizontal rule” comments are the right length (80)."
-  language: pygrep
-  entry: '^(\#.|\%.|\/\/)(.{0,69}|.{71})([-=\\u2500-\\u257F])\3{7}$'
 - id: check-separator-length-100
-  name: check-separator-length-100
+  name: '[text] Check separator length is 100.'
   description: "Check that “horizontal rule” comments are the right length (100)."
   language: pygrep
   entry: '^(\#.|\%.|\/\/)(.{0,89}|.{91})([-=\\u2500-\\u257F])\3{7}$'
 - id: check-separator-length-120
-  name: check-separator-length-120
+  name: '[text] Check separator length is 120.'
   description: "Check that “horizontal rule” comments are the right length (120)."
   language: pygrep
   entry: '^(\#.|\%.|\/\/)(.{0,109}|.{111})([-=\\u2500-\\u257F])\3{7}$'
