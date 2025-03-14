@@ -168,6 +168,7 @@
           \}'
 # endregion latex-lint-modern ----------------------------------------------------------
 
+
 # region latex-lint-extra --------------------------------------------------------------
 - id: latex-avoid-makeatletter
   name: '[tex] Avoid unnecessary `\makeatletter`.'
@@ -190,7 +191,7 @@
   entry: '[\_\^]\{?\\text\{\S*\w\}|\\text\{\S*\w\}[\(\[\{\\]'
 - id: latex-use-label-convention
   name: '[tex] Follow label convention "\label{<tag>:<name>}".'
-  description: 'Checks if labels are of the form \label{<tag>:<name>}'
+  description: 'Checks if labels are of the form \label{<tag>:<name>} (no uppercase!).'
   language: pygrep
   types: [tex]
   entry: '\\label\{(?![a-z]+:[a-z0-9_]+\})'
