@@ -1,10 +1,8 @@
 # latex-hooks
 
-A collection of pre-commit hooks for $\LaTeX$ projects.
+A collection of pre-commit hooks for $\LaTeX$.
 
-[HOOKS](HOOKS) | [CHANGELOG](CHANGELOG.md) | [LICENSE](LICENSE)
-
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit) | [HOOKS](HOOKS) | [CHANGELOG](CHANGELOG.md) | [LICENSE](LICENSE)
 
 ## Hooks
 
