@@ -107,7 +107,6 @@
               |centerline
               |over
               |sloppy
-              |graphicspath
           )\b
           (?![^\n]*?%\x20+tex:\x20+ignore)'
 - id: latex-avoid-legacy-environments

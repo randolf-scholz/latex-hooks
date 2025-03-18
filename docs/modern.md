@@ -36,7 +36,6 @@ Avoid using legacy commands that are considered deprecated. This includes:
 - `\centerline`: Use `\centering` instead[^l2tabu].
 - `\over`: Use `\frac{}{}` instead[^l2tabu].
 - `\sloppy`[^l2tabu].
-- `\graphicspath`: Use environment variable instead[^l2tabu].
 
 ## `avoid-legacy-environments`
 
