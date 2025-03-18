@@ -21,4 +21,4 @@ The tag should consist only of lowercase letters and the name should consist onl
 
 Checks that super- and subscripts do not use the `\text` command.
 
-Instead of writing `x^\text{obs}`, define a macro `\obs` and write `x^\obs`.
+Instead of writing `x^\text{missing}`, define a macro `\miss` and write `x^\miss`.
