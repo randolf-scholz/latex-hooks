@@ -2,6 +2,8 @@
 
 Hooks that check that modern $\LaTeX$ practices are followed.
 
+To ignore an error, add `% tex: ignore` to end of the line.
+
 ## `avoid-let`
 
 Use `\NewCommandCopy` instead of `\let` to create copies of existing commands.
