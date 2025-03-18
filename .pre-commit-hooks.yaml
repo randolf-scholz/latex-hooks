@@ -85,27 +85,49 @@
   language: pygrep
   entry: '\\((new|renew|provide)command|DeclareRobustCommand)\b'
   types: [tex]
-- id: latex-avoid-legacy-options
-  name: '[tex] Avoid usage of `\DeclareOption`.'
-  description: 'Use `\DeclareKeys` instead of legacy options system (see usrguide/clsguide).'
-  language: pygrep
-  entry: '\\(DeclareOption|CurrentOption|OptionNotUsed|ProcessOptions|ExecuteOptions)\b'
 - id: latex-avoid-double-dollar
   name: '[tex] Avoid usage of `$$`.'
   description: 'Use `\[` and `\]` or an enviroment instead of `$$`.'
   language: pygrep
   types: [tex]
   entry: '\$\$'
-- id: latex-avoid-obsolete-packages
-  name: '[tex] Avoid obsolete packages.'
-  description: 'Avoid obsolete packages.'
+- id: latex-avoid-legacy-commands
+  name: '[tex] Avoid legacy commands.'
+  description: 'Avoid legacy commands.'
+  types: [tex]
+  language: pygrep
+  entry:  '(?x)\\(
+            (bf|em|it|rm|sf|sl|tt)
+            |centerline
+            |over
+            |sloppy
+            |graphicspath
+          )\b'
+- id: latex-avoid-legacy-environments
+  name: '[tex] Avoid legacy environments.'
+  description: 'Avoid legacy environments.'
+  types: [tex]
+  language: pygrep
+  entry:  '(?x)\\begin\{(
+            appendix
+            |eqnarray
+          )\}'
+- id: latex-avoid-legacy-options
+  name: '[tex] Avoid usage of `\DeclareOption`.'
+  description: 'Use `\DeclareKeys` instead of legacy options system (see usrguide/clsguide).'
+  language: pygrep
+  entry: '\\(DeclareOption|CurrentOption|OptionNotUsed|ProcessOptions|ExecuteOptions)\b'
+- id: latex-avoid-legacy-packages
+  name: '[tex] Avoid legacy packages.'
+  description: 'Avoid legacy packages.'
   language: pygrep
   types: [tex]
-  entry: '(?x)\\(usepackage|RequirePackage)
+  entry:  '(?x)\\(usepackage|RequirePackage)
               \s*(\[[^\]]*\])?\s*\{
                   ((\w|-)+\s*,\s*)*(
                       a4
                       |a4wide
+                      |ae
                       |algorithmic
                       |anysize
                       |backrefx
@@ -120,6 +142,7 @@
                       |eledmac
                       |eps
                       |epsfig
+                      |eqnarray
                       |euler
                       |eurotex
                       |fancyheadings
@@ -141,11 +164,13 @@
                       |ngerman
                       |nthm
                       |palatino
+                      |pdfsync
                       |picinpar
                       |prosper
                       |ps4pdf
                       |psfig
                       |psfrag
+                      |pslatex
                       |raggedr
                       |scrjura
                       |scrlettr
@@ -154,15 +179,21 @@
                       |seminar
                       |sistyle
                       |siunit
+                      |SIunits
                       |subfig
                       |subfigure
                       |t1enc
+                      |tabu
                       |times
                       |tocstyle
+                      |twoside
+                      |txfonts
                       |ucs
+                      |umlaut
                       |utopia
                       |vmargin
                       |xparse
+                      |zefonts
                   )
               (\s*,\s*(\w|-)+)*
           \}'
