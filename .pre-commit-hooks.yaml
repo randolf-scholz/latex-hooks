@@ -70,59 +70,70 @@
 - id: latex-avoid-def
   name: '[tex] Avoid usage of `\def`.'
   description: 'Use `\NewDocumentCommand` instead of `\def`.'
-  entry: '\\def\s*\\[^\d]\w*\s*\{' # excludes \def\0 and \def\internal@command...
+  entry: '(?:^[^%\n][^\n]*?)(\\def\s*\\[^\d]\w*\s*\{)' # excludes \def\0 and \def\internal@command...
   language: pygrep
+  args: ["--multiline"]
   types: [tex]
 - id: latex-avoid-let
   name: '[tex] Avoid usage of `\let`.'
   description: 'Use `\NewCommandCopy` instead of `\let`.'
   language: pygrep
-  entry: '\\let\s*\\[^\d]\w*\s*\{' # excludes \def\0 and \def\internal@command...
+  args: ["--multiline"]
+  entry: '(?:^[^%\n][^\n]*?)(\\let\s*\\[^\d]\w*\s*\{)' # excludes \def\0 and \def\internal@command...
   types: [tex]
 - id: latex-avoid-newcommand
   name: '[tex] Avoid usage of `\newcommand`.'
   description: 'Use `\NewDocumentCommand` instead of `\newcommand` or `\DeclareRobustCommand`.'
   language: pygrep
-  entry: '\\((new|renew|provide)command|DeclareRobustCommand)\b'
+  args: ["--multiline"]
+  entry: '(?:^[^%\n][^\n]*?)\\((new|renew|provide)command|DeclareRobustCommand)\b'
   types: [tex]
 - id: latex-avoid-double-dollar
   name: '[tex] Avoid usage of `$$`.'
   description: 'Use `\[` and `\]` or an enviroment instead of `$$`.'
   language: pygrep
   types: [tex]
-  entry: '\$\$'
+  args: ["--multiline"]
+  entry: (?:^[^%\n][^\n]*?)(\$\$)'
 - id: latex-avoid-legacy-commands
   name: '[tex] Avoid legacy commands.'
   description: 'Avoid legacy commands.'
   types: [tex]
   language: pygrep
-  entry:  '(?x)\\(
-            (bf|em|it|rm|sf|sl|tt)
-            |centerline
-            |over
-            |sloppy
-            |graphicspath
+  args: ["--multiline"]
+  entry:  '(?x)(?:^[^%\n][^\n]*?)
+          \\(
+              (bf|em|it|rm|sf|sl|tt)
+              |centerline
+              |over
+              |sloppy
+              |graphicspath
           )\b'
 - id: latex-avoid-legacy-environments
   name: '[tex] Avoid legacy environments.'
   description: 'Avoid legacy environments.'
   types: [tex]
   language: pygrep
-  entry:  '(?x)\\begin\{(
-            appendix
-            |eqnarray
+  args: ["--multiline"]
+  entry:  '(?x)(?:^[^%\n][^\n]*?)
+          \\begin\{(
+              appendix
+              |eqnarray
           )\}'
 - id: latex-avoid-legacy-options
   name: '[tex] Avoid usage of `\DeclareOption`.'
   description: 'Use `\DeclareKeys` instead of legacy options system (see usrguide/clsguide).'
   language: pygrep
-  entry: '\\(DeclareOption|CurrentOption|OptionNotUsed|ProcessOptions|ExecuteOptions)\b'
+  args: ["--multiline"]
+  entry: '(?:^[^%\n][^\n]*?)\\(DeclareOption|CurrentOption|OptionNotUsed|ProcessOptions|ExecuteOptions)\b'
 - id: latex-avoid-legacy-packages
   name: '[tex] Avoid legacy packages.'
   description: 'Avoid legacy packages.'
   language: pygrep
   types: [tex]
-  entry:  '(?x)\\(usepackage|RequirePackage)
+  args: ["--multiline"]
+  entry:  '(?x)(?:^[^%\n][^\n]*?)
+          \\(usepackage|RequirePackage)
               \s*(\[[^\]]*\])?\s*\{
                   ((\w|-)+\s*,\s*)*(
                       a4
@@ -205,25 +216,29 @@
   name: '[tex] Avoid unnecessary `\makeatletter`.'
   description: 'Using `\makeatletter` is unnecessary inside `.sty` and `.cls` files.'
   language: pygrep
+  args: ["--multiline"]
   types: [tex]
   files: '\.(sty|cls)$'
-  entry: '\\makeat(letter|other)\b'
+  entry: '(?:^[^%\n][^\n]*?)\\makeat(letter|other)\b'
 - id: latex-avoid-manual-spacing
   name: '[tex] Avoid manual spacing commands.'
   description: "Checks for the presence of manual spacing commands."
   language: pygrep
+  args: ["--multiline"]
   types: [tex]
-  entry: '\\[!,.:>;]'
+  entry: '(?:^[^%\n][^\n]*?)\\[!,.:>;]'
 - id: latex-avoid-text-superscript
   name: '[tex] Avoid usage of `x^\text{...}`.'
   description: 'Consider defining a command instead of `^\text{...}`.'
   language: pygrep
+  args: ["--multiline"]
   types: [tex]
-  entry: '[\_\^]\{?\\text\{\S*\w\}|\\text\{\S*\w\}[\(\[\{\\]'
+  entry: '(?:^[^%\n][^\n]*?)[\_\^]\{?\\text\{\S*\w\}|\\text\{\S*\w\}[\(\[\{\\]'
 - id: latex-use-label-convention
   name: '[tex] Follow label convention "\label{<tag>:<name>}".'
   description: 'Checks if labels are of the form \label{<tag>:<name>} (no uppercase!).'
   language: pygrep
+  args: ["--multiline"]
   types: [tex]
-  entry: '\\label\{(?![a-z]+:[a-z0-9_]+\})'
+  entry: '(?:^[^%\n][^\n]*?)\\label\{(?![a-z]+:[a-z0-9_]+\})'
 # endregion latex-lint-extra -----------------------------------------------------------
