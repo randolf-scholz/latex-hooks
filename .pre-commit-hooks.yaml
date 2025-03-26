@@ -129,7 +129,6 @@
   entry:  '(?x)(?:^|^[^%\n][^\n]*?)
           \\(
             DeclareOption
-            |CurrentOption
             |OptionNotUsed
             |ProcessOptions
             |ExecuteOptions
