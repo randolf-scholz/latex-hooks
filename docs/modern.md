@@ -110,7 +110,7 @@ Checks that certain obsolete packages are not used. List from Stefan Kottwitz[^2
 | times            | newtx            | Times fonts.                       |
 | tocstyle         | tocbasic         | Table of contents.                 |
 | twoside          | geometry         | Page layouts.                      |
-| txdonts          | newtx            | Times fonts.                       |
+| txfonts          | newtx            | Times fonts.                       |
 | ucs              | None             | UTF8 is default.                   |
 | umlaut           | inputenc         | Font encoding.                     |
 | utopia           | fourier          | Utopia fonts.                      |
