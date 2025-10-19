@@ -70,16 +70,16 @@
 - id: latex-avoid-def
   name: '[tex] Avoid usage of `\def`.'
   description: 'Use `\NewDocumentCommand` instead of `\def`.'
-  entry: '(?:^|^[^%\n][^\n]*?)(\\def\s*\\[^\d]\w*\s*\{)' # excludes \def\0 and \def\internal@command...
-  language: pygrep
+  entry: '(?:^|^[^%\n][^\n]*?)(\\def\s*\\[^\d]\w*+[^@])' # excludes \def\0 and \def\internal@command...
   args: ["--multiline"]
+  language: pygrep
   types: [tex]
 - id: latex-avoid-let
   name: '[tex] Avoid usage of `\let`.'
   description: 'Use `\NewCommandCopy` instead of `\let`.'
   language: pygrep
   args: ["--multiline"]
-  entry: '(?:^|^[^%\n][^\n]*?)(\\let\s*\\[^\d]\w*\s*\{)' # excludes \def\0 and \def\internal@command...
+  entry: '(?:^|^[^%\n][^\n]*?)(\\let\s*\\[^\d]\w*+[^@])' # excludes \let\0 and \let\internal@command...
   types: [tex]
 - id: latex-avoid-newcommand
   name: '[tex] Avoid usage of `\newcommand`.'
@@ -121,6 +121,13 @@
               |eqnarray
           )\}
           (?![^\n]*?%\x20+tex:\x20+ignore)'
+- id: latex-avoid-ifmmode
+  name: '[tex] Avoid usage of `\ifmmode`.'
+  description: 'Use `\TextOrMath` instead of `\ifmmode`.'
+  args: ["--multiline"]
+  entry: '\\ifmmode\b'
+  types: [tex]
+  language: pygrep
 - id: latex-avoid-legacy-options
   name: '[tex] Avoid usage of `\DeclareOption`.'
   description: 'Use `\DeclareKeys` instead of legacy options system (see usrguide/clsguide).'

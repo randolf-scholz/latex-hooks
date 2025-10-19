@@ -12,7 +12,7 @@ Do no use difficult to read manual spacing commands like `\!`, `\,`, `\:` and `\
 
 ## `use-label-convention`
 
-Checks that `\label{..}` commands follow the schema `\label{<tag>:<name>}`, 
+Checks that `\label{..}` commands follow the schema `\label{<tag>:<name>}`,
 matching the regex `[a-z]+:[a-z0-9_]+`. That is, the tag should consist only
 of lowercase letters and the name should consist only of digits, underscores and lowercase letters.
 Dashes are not allowed to ensure the name can be selected with a simple double click in most editors.
