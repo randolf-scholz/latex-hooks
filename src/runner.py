@@ -42,7 +42,7 @@ def parse_check_definition(yaml_content: str) -> Check:
 
 def load_checks() -> dict[str, Check]:
     r"""Load available checks.
-    
+
     These are stored as .yaml files in the `checks/` directory.
     """
     return {}
