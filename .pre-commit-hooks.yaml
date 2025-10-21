@@ -17,23 +17,23 @@
   name: '[text] Check separator length is 80.'
   description: "Check that “horizontal rule” comments are the right length (80)."
   language: pygrep
-  entry: '^(\#.|\%.|\/\/)(.{0,69}|.{71})([-=\\u2500-\\u257F])\3{7}$'
+  entry: '^(\#.|\%.|\/\/)(.{59,69}|.{71})([-=\\u2500-\\u257F])\3{7}$'
 - id: check-separator-length-88
   name: '[text] Check separator length is 88.'
   description: "Check that “horizontal rule” comments are the right length (88)."
-  entry: '^(\#.|\%.|\/\/)(.{0,77}|.{79,})([-=\\u2500-\\u257F])\3{7}$'
+  entry: '^(\#.|\%.|\/\/)(.{59,77}|.{79,})([-=\\u2500-\\u257F])\3{7}$'
   language: pygrep
   types: [text]
 - id: check-separator-length-100
   name: '[text] Check separator length is 100.'
   description: "Check that “horizontal rule” comments are the right length (100)."
   language: pygrep
-  entry: '^(\#.|\%.|\/\/)(.{0,89}|.{91})([-=\\u2500-\\u257F])\3{7}$'
+  entry: '^(\#.|\%.|\/\/)(.{59,89}|.{91})([-=\\u2500-\\u257F])\3{7}$'
 - id: check-separator-length-120
   name: '[text] Check separator length is 120.'
   description: "Check that “horizontal rule” comments are the right length (120)."
   language: pygrep
-  entry: '^(\#.|\%.|\/\/)(.{0,109}|.{111})([-=\\u2500-\\u257F])\3{7}$'
+  entry: '^(\#.|\%.|\/\/)(.{59,109}|.{111})([-=\\u2500-\\u257F])\3{7}$'
 # endregion pygrep ---------------------------------------------------------------------
 
 # region latex -------------------------------------------------------------------------
@@ -70,14 +70,14 @@
 - id: latex-avoid-def
   name: '[tex] Avoid usage of `\def`.'
   description: 'Use `\NewDocumentCommand` instead of `\def`.'
-  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)(\\def\s*\\[^@\d]\w*+[^@])' # excludes \def\0 and \def\internal@command...
+  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)(\\def\s*)(\\\w*+(?!##|@))' # excludes \def\0 and \def\internal@command...
   language: pygrep
   types: [tex]
 - id: latex-avoid-let
   name: '[tex] Avoid usage of `\let`.'
   description: 'Use `\NewCommandCopy` instead of `\let`.'
   language: pygrep
-  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)(\\let\s*\\[^@\d]\w*+[^@])' # excludes \let\0 and \let\internal@command...
+  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)(\\let\s*)(\\\w*+(?!##|@))' # excludes \let\0 and \let\internal@command...
   types: [tex]
 - id: latex-avoid-newcommand
   name: '[tex] Avoid usage of `\newcommand`.'
