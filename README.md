@@ -17,6 +17,7 @@ A collection of pre-commit hooks for $\LaTeX$.
   - [`latex-avoid-def`](docs/modern.md#avoid-def)
   - [`latex-avoid-let`](docs/modern.md#avoid-let)
   - [`latex-avoid-newcommand`](docs/modern.md#avoid-newcommand)
+  - [`latex-avoid-legacy-hooks`](docs/modern.md#avoid-legacy-hooks)
   - [`latex-avoid-double-dollar`](docs/modern.md#avoid-double-dollar)
 - [`latex-lint-extra`](docs/extra.md): Additional hooks for opinionated $\LaTeX$ style.
   - [`latex-avoid-makeatletter`](docs/extra.md#avoid-makeatletter)

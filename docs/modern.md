@@ -43,6 +43,18 @@ Avoid using legacy environments that are considered deprecated. This includes:
 
 - `begin{appendix}`: Use `\appendix` instead[^l2tabu].
 
+## `avoid-legacy-hooks`
+
+Use the new built-in hook management system instead of `\AtEndPreamble`, `\AfterEndPreamble`, and `\AfterEndDocument`. The new hooks are clearer in their timing and do not require the `etoolbox` package. Check `texdoc lthooks` for more information.
+
+| builtin-hook                            | legacy hooks        | legacy source | note                                             |
+|-----------------------------------------|---------------------|---------------|--------------------------------------------------|
+| `\AddToHook{begindocument/before}{...}` | `\AtEndPreamble`    | etoolbox      | before `aux` file gets parsed                    |
+| `\AddToHook{begindocument}{...}`        | `\AtBeginDocument`  | built-in      | after `aux` file has been parsed                 |
+| `\AddToHook{begindocument/end}{...}`    | `\AfterEndPreamble` | etoolbox      | immediately after `\begin{document}`             |
+| `\AddToHook{enddocument}{...}`          | `\AtEndDocument`    | built-in      | at start of end{document}                        |
+| `\AddToHook{enddocument/end}{...}`      | `\AfterEndDocument` | etoolbox      | after the new `aux` has been written and re-read |
+
 ## `avoid-obsolete-packages`
 
 Checks that certain obsolete packages are not used. List from Stefan Kottwitz[^26200] and updated[^l2tabu].

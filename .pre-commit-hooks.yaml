@@ -88,6 +88,12 @@
   entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)\\((new|renew|provide)command|DeclareRobustCommand)\b'
   types: [tex]
   exclude: '\.tikz\b'
+- id: latex-avoid-legacy-hooks
+  name: '[tex] Avoid legacy hooks like `\AtEndPreamble`.'
+  description: 'Use `\AddToHook{begindocument/before}{...}`,  instead of `\AtEndPreamble{...}`.'
+  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)\\(AtEndPreamble|AtBeginDocument|AfterEndPreamble|AtEndDocument|AfterEndDocument)\b'
+  types: [tex]
+  language: pygrep
 - id: latex-avoid-double-dollar
   name: '[tex] Avoid usage of `$$`.'
   description: 'Use `\[` and `\]` or an enviroment instead of `$$`.'
