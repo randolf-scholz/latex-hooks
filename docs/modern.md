@@ -47,13 +47,13 @@ Avoid using legacy environments that are considered deprecated. This includes:
 
 Use the new built-in hook management system instead of `\AtEndPreamble`, `\AfterEndPreamble`, and `\AfterEndDocument`. The new hooks are clearer in their timing and do not require the `etoolbox` package. Check `texdoc lthooks` for more information.
 
-| builtin-hook                            | legacy hooks        | legacy source | note                                             |
-|-----------------------------------------|---------------------|---------------|--------------------------------------------------|
-| `\AddToHook{begindocument/before}{...}` | `\AtEndPreamble`    | etoolbox      | before `aux` file gets parsed                    |
-| `\AddToHook{begindocument}{...}`        | `\AtBeginDocument`  | built-in      | after `aux` file has been parsed                 |
-| `\AddToHook{begindocument/end}{...}`    | `\AfterEndPreamble` | etoolbox      | immediately after `\begin{document}`             |
-| `\AddToHook{enddocument}{...}`          | `\AtEndDocument`    | built-in      | at start of end{document}                        |
-| `\AddToHook{enddocument/end}{...}`      | `\AfterEndDocument` | etoolbox      | after the new `aux` has been written and re-read |
+| legacy hooks        | builtin-hook                            | legacy source | note                                             |
+|---------------------|-----------------------------------------|---------------|--------------------------------------------------|
+| `\AtEndPreamble`    | `\AddToHook{begindocument/before}{...}` | etoolbox      | before `aux` file gets parsed                    |
+| `\AtBeginDocument`  | `\AddToHook{begindocument}{...}`        | built-in      | after `aux` file has been parsed                 |
+| `\AfterEndPreamble` | `\AddToHook{begindocument/end}{...}`    | etoolbox      | immediately after `\begin{document}`             |
+| `\AtEndDocument`    | `\AddToHook{enddocument}{...}`          | built-in      | at start of end{document}                        |
+| `\AfterEndDocument` | `\AddToHook{enddocument/end}{...}`      | etoolbox      | after the new `aux` has been written and re-read |
 
 ## `avoid-obsolete-packages`
 
