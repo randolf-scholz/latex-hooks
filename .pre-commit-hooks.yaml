@@ -70,7 +70,7 @@
 - id: latex-avoid-def
   name: '[tex] Avoid usage of `\def`.'
   description: 'Use `\NewDocumentCommand` instead of `\def`.'
-  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)(\\def\s*)(\\(?!\d)\w*+(?!##|@))' # excludes \def\0 and \def\internal@command...
+  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)(\\def\s*)(\\\w{2,}+(?!##|@))' # excludes single char and \def\internal@command...
   language: pygrep
   types: [tex]
   exclude: '\.tikz\b'
@@ -78,7 +78,7 @@
   name: '[tex] Avoid usage of `\let`.'
   description: 'Use `\NewCommandCopy` instead of `\let`.'
   language: pygrep
-  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)(\\let\s*)(\\(?!\d)\w*+(?!##|@))' # excludes \let\0 and \let\internal@command...
+  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)(\\let\s*)(\\\w{2,}+(?!##|@))' # excludes single char and \let\internal@command...
   types: [tex]
   exclude: '\.tikz\b'
 - id: latex-avoid-newcommand
