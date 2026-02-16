@@ -53,6 +53,7 @@
     - "--nowarn=19" # You should use `’` (ASCII 39) instead of `’` (ASCII 180).
     - "--nowarn=21" # This command might not be intended.
     - "--nowarn=22" # Comment displayed.
+    - "--nowarn=24" # del space for corrent pagereference. (annoying/false positives)
     - "--nowarn=30" # Multiple spaces detected in output.
     - "--nowarn=46" # Use `\(...\)` instead of `$...$`.
 - id: lacheck
