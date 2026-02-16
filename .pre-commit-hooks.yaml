@@ -107,10 +107,29 @@
   language: pygrep
   entry:  '(?x)(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
           \\(
-              (bf|em|it|rm|sf|sl|tt)
+              (bf|em|it|rm|sf|sl|tt|sc)
               |centerline
               |over
               |sloppy
+              |AtEndPreamble
+              |AtBeginDocument
+              |AfterEndPreamble
+              |AtEndDocument
+              |AfterEndDocument
+              |(new|renew|provide|declare)command
+              |(new|renew|declare)environment
+              |show
+              |(set|h|v)box
+              |
+              |(num|dim|glue)expr
+              |DeclareOption
+              |ProcessOptions
+              |@ifpackageloaded
+              |@ifstar
+              |@ifnextchar
+              |@nameuse
+              |uppercase
+              |lowercase
           )\b
           (?![^\n]*?%\x20+tex:\x20+ignore)'
 - id: latex-avoid-legacy-environments
@@ -119,9 +138,10 @@
   types: [tex]
   language: pygrep
   entry:  '(?x)(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
-          \\begin\{(
+          \\(begin|end)\{(
               appendix
               |eqnarray
+              |displaymath
           )\}
           (?![^\n]*?%\x20+tex:\x20+ignore)'
 - id: latex-avoid-ifmmode
@@ -161,6 +181,7 @@
                       |caption2
                       |color
                       |csvtools
+                      |currfile
                       |datetime
                       |dinat
                       |doublespace
@@ -212,6 +233,7 @@
                       |tabu
                       |times
                       |tocstyle
+                      |trimspaces
                       |twoside
                       |txfonts
                       |ucs
