@@ -47,13 +47,15 @@
   args: # default configuration
     - "--erroron=all"
     - "--nowarn=1" # Command terminated with space.
+    - "--nowarn=2" # Non-breaking space (`~') should have been used. (annoying/false positives)
     - "--nowarn=3" # Enclose previous parentheses with `{}`.
     - "--nowarn=9" # ‘%s’ expected, found ‘%s’.
+    - "--nowarn=12" # Interword spacing (`\ ') should perhaps be used. (annoying/false positives)
     - "--nowarn=17" # Number of ‘character’ doesn't match the number of ‘character’.
-    - "--nowarn=19" # You should use `’` (ASCII 39) instead of `’` (ASCII 180).
+    - "--nowarn=19" # You should use `’` (ASCII 39) instead of `’` (ASCII 180). (unicode incompatible)
     - "--nowarn=21" # This command might not be intended.
     - "--nowarn=22" # Comment displayed.
-    - "--nowarn=24" # del space for corrent pagereference. (annoying/false positives)
+    - "--nowarn=24" # delete space for correct pagereference. (annoying/false positives)
     - "--nowarn=30" # Multiple spaces detected in output.
     - "--nowarn=46" # Use `\(...\)` instead of `$...$`.
 - id: lacheck
