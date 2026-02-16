@@ -15,7 +15,8 @@ Use `\NewDocumentCommand` instead of `\newcommand` to define commands.
 ## `avoid-def`
 
 Use `\NewDocumentCommand` instead of `\def` to define commands.
-Contrary to `\newcommand`, this hooks ignores cases where (1) the command contains `@`, marking it as internal, or (2) is of the form `\d` for some single digit `d`. This can be useful to temporarily assign a command to a different meaning.
+Contrary to `\newcommand`, this hooks ignores cases where (1) the command contains `@`, marking it as internal, or (2) is of the form `\d` for some single digit `d`.
+This can be useful to temporarily assign a command to a different meaning.
 
 ## `avoid-double-dollar`
 
@@ -31,33 +32,86 @@ See `texdoc clsguide` for more information.
 
 Avoid using legacy commands that are considered deprecated. This includes:
 
-- Font selection commands like `\rm`, `\it`, `\bf`, `\sf`, `\tt`, or `\sc`:
-  Use `\textbf{}`, `\textit{}`, etc. instead[^fonts][^l2tabu].
-- `\centerline`: Use `\centering` instead[^l2tabu].
-- `\over`: Use `\frac{}{}` instead[^l2tabu].
-- `\sloppy`[^l2tabu].
+- Use the new built-in hook management system instead of `\AtEndPreamble`, `\AfterEndPreamble`, and `\AfterEndDocument`.
+  The new hooks are clearer in their timing and do not require the `etoolbox` package. Check `texdoc lthooks` for more information.
+- Outdated methods to define commands and environments, such as `\newcommand` and `\newenvironment`,
+  should be replaced with the more powerful and flexible `\NewDocumentCommand` and `\NewDocumentEnvironment` interfaces.
+- Outdated font commands such as `\rm`, `\bf`, etc. should be replaced with their modern equivalents like `\textrm`, `\textbf`, etc.
+  for better font handling and compatibility with packages.[^fonts][^3][^l2tabu].
+
+| outdated              | built-in alternative                    | Source            | description                                                                                                                        |
+|-----------------------|-----------------------------------------|-------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| `\@ifpackageloaded`   | `\IfPackageLoadedTF`                    | clsguide §4.6[^1] | test whether a package is loaded                                                                                                   |
+| `\AtEndPreamble`      | `\AddToHook{begindocument/before}{...}` | lthooks §3.1[^2]  | before `aux` file gets parsed                                                                                                      |
+| `\AtBeginDocument`    | `\AddToHook{begindocument}{...}`        | lthooks §3.1[^2]  | after `aux` file has been parsed                                                                                                   |
+| `\AfterEndPreamble`   | `\AddToHook{begindocument/end}{...}`    | lthooks §3.1[^2]  | immediately after `\begin{document}`                                                                                               |
+| `\AtEndDocument`      | `\AddToHook{enddocument}{...}`          | lthooks §3.1[^2]  | at start of end{document}                                                                                                          |
+| `\AfterEndDocument`   | `\AddToHook{enddocument/end}{...}`      | lthooks §3.1[^2]  | after the new `aux` has been written and re-read                                                                                   |
+| `\uppercase`          | `\MakeUppercase`, `\MakeTitlecase`      | clsguide §5.2[^1] | case changing for text (locale-aware; primitives suggested only for programmatic material)                                         |
+| `\lowercase`          | `\MakeLowercase`                        | clsguide §5.2[^1] | case changing for text (locale-aware; primitives suggested only for programmatic material)                                         |
+| `\@ifnextchar`        | `\NewDocumentCommand`                   | usrguide §2.4[^0] | replace manual lookahead-based optional-argument parsing with declarative argument signatures (incl. safe nesting of optionals)    |
+| `\@ifstar`            | `\IfBooleanTF`                          | usrguide §2.8[^0] | structured star/flag branching (typically used with an `s` argument in `\NewDocumentCommand`)                                      |
+| `\newcommand`         | `\NewDocumentCommand`                   | usrguide §2.4[^0] | Command definition                                                                                                                 |
+| `\renewcommand`       | `\RenewDocumentCommand`                 | usrguide §2.4[^0] | Command redefinition                                                                                                               |
+| `\providecommand`     | `\ProvideDocumentCommand`               | usrguide §2.4[^0] | Command definition if not exists                                                                                                   |
+| `\declarecommand`     | `\DeclareDocumentCommand`               | usrguide §2.4[^0] | Command declaration                                                                                                                |
+| `\newenvironment`     | `\NewDocumentEnvironment`               | usrguide §2.4[^0] | Environment definition                                                                                                             |
+| `\renewenvironment`   | `\RenewDocumentEnvironment`             | usrguide §2.4[^0] | Environment redefinition                                                                                                           |
+| `\declareenvironment` | `\DeclareDocumentEnvironment`           | usrguide §2.4[^0] | Environment declaration                                                                                                            |
+| `\let`                | `\NewCommandCopy`                       | usrguide §3[^0]   | create a copy of an existing command (robust, with error checking)                                                                 |
+| `\let`                | `\RenewCommandCopy`                     | usrguide §3[^0]   | redefine a copy of an existing command (robust, with error checking)                                                               |
+| `\let`                | `\DeclareCommandCopy`                   | usrguide §3[^0]   | declare a copy of an existing command (robust, with error checking)                                                                |
+| `\let`                | `\NewEnvironmentCopy`                   | usrguide §3[^0]   | create a copy of an existing environment (robust, with error checking)                                                             |
+| `\let`                | `\RenewEnvironmentCopy`                 | usrguide §3[^0]   | redefine a copy of an existing environment (robust, with error checking)                                                           |
+| `\let`                | `\DeclareEnvironmentCopy`               | usrguide §3[^0]   | declare a copy of an existing environment (robust, with error checking)                                                            |
+| `\show`               | `\ShowCommand`                          | usrguide §3[^0]   | show the *real* meaning of robust / `\NewDocumentCommand`-style commands (incl. argument signature), not just a wrapper            |
+| `\show`               | `\ShowEnvironment`                      | usrguide §3[^0]   | show begin/end code meaning for environments in a more informative way                                                             |
+| `\setbox`             | `\sbox`                                 | clsguide §2.6[^1] | box manipulation using LaTeX box commands (color-safe; modern options comparable to primitives)                                    |
+| `\hbox`               | `\mbox`                                 | clsguide §2.6[^1] | box manipulation using LaTeX box commands (color-safe; modern options comparable to primitives)                                    |
+| `\vbox`               | `\parbox`                               | clsguide §2.6[^1] | vertical boxing using LaTeX constructs (color-safe; robust scoping)                                                                |
+| none                  | `\fpeval`                               | usrguide §5[^0]   | expandable floating-point (and more) evaluation in the kernel (incl. trig, exponentials, rounding, randoms, tuples, etc.)          |
+| `\numexpr`            | `\inteval`                              | usrguide §5[^0]   | expandable integer arithmetic wrapper (usable where TeX needs a number; documents the syntax restrictions clearly)                 |
+| `\dimexpr`            | `\dimeval`                              | usrguide §5[^0]   | expandable dimension arithmetic wrapper (fast, primitive-backed; usable in assignments/expansion contexts)                         |
+| `\glueexpr`           | `\skipeval`                             | usrguide §5[^0]   | expandable skip (“rubber length”) arithmetic wrapper (primitive-backed)                                                            |
+| `\@nameuse`           | `\UseName`                              | usrguide §4[^0]   | execute a control sequence constructed from a string (document-level interface to `\csname...\endcsname` usage patterns)           |
+| `\edef`               | `\ExpandArgs`                           | usrguide §4[^0]   | expand selected arguments (using an expansion “spec”) before calling a command—cleaner than ad-hoc `\edef`/temporary-csname tricks |
+| `\DeclareOption`      | `\DeclareKeys`                          | clsguide §4.5[^1] | declare options using the key–value option system (more flexible and robust than classic option system)                            |
+| none                  | `\SetKeys`                              | clsguide §4.5[^1] | set default values for keys (key–value option system)                                                                              |
+| `\DeclareOption*`     | `\DeclareUnknownKeyHandler`             | clsguide §4.5[^1] | default handler for unknown *key* options (key–value option system)                                                                |
+| `\ProcessOptions`     | `\ProcessKeyOptions`                    | clsguide §4.5[^1] | process options using the key–value option system                                                                                  |
+| `\@latexerr`          | `\PackageError`, `\ClassError`          | clsguide §4.8[^1] | report errors with package/class context and consistent formatting                                                                 |
+| `\@warning`           | `\PackageWarning`, `\ClassWarning`,     | clsguide §4.8[^1] | emit warnings with package/class context (optionally with/without line numbers)                                                    |
+| `\wlog`               | `\PackageInfo`, `\ClassInfo`            | clsguide §4.8[^1] | write informational messages to the log with package/class context                                                                 |
+| `\rm`                 | `\textrm{…}`, `\rmfamily`               | fntguide §2[^3]   | roman/serif family: use `\textrm` for an argument, `\rmfamily` as a declaration                                                    |
+| `\sf`                 | `\textsf{…}`, `\sffamily`               | fntguide §2[^3]   | sans-serif family                                                                                                                  |
+| `\tt`                 | `\texttt{…}`, `\ttfamily`               | fntguide §2[^3]   | typewriter/monospace family                                                                                                        |
+| `\bf`                 | `\textbf{…}`, `\bfseries`               | fntguide §2[^3]   | bold series                                                                                                                        |
+| `\it`                 | `\textit{…}`, `\itshape`                | fntguide §2[^3]   | italic shape                                                                                                                       |
+| `\sl`                 | `\textsl{…}`, `\slshape`                | fntguide §2[^3]   | slanted/oblique shape                                                                                                              |
+| `\sc`                 | `\textsc{…}`, `\scshape`                | fntguide §2[^3]   | small caps shape                                                                                                                   |
+| `\em`                 | `\emph{…}`                              | fntguide §2[^3]   | emphasis (semantic; typically italic or slanted)                                                                                   |
+| `\over`               | `\frac{...}{...}`                       | l2tabu[^l2tabu]   | `\over` is TeX syntax, hard to parse and interacts badly with `amsmath`; `\frac` is clearer and package-friendly                   |
+| `\centerline`         | `\centering`                            | l2tabu[^l2tabu]   | `\centerline` is plain TeX, can be incompatible with LaTeX packages and cause weird list/layout effects                            |
+| `\parindent=...`      | `\setlength{\parindent}{...}`           | l2tabu[^l2tabu]   | prefer LaTeX length setting (more robust, interacts better with packages like `calc`)                                              |
+| `\eqnarray`           | `align`, `align*`, etc.                 | l2tabu[^l2tabu]   | `eqnarray` has spacing and numbering issues; `amsmath` alignments are more consistent and capable                                  |
 
 ## `avoid-legacy-environments`
 
 Avoid using legacy environments that are considered deprecated. This includes:
 
-- `begin{appendix}`: Use `\appendix` instead[^l2tabu].
-
-## `avoid-legacy-hooks`
-
-Use the new built-in hook management system instead of `\AtEndPreamble`, `\AfterEndPreamble`, and `\AfterEndDocument`. The new hooks are clearer in their timing and do not require the `etoolbox` package. Check `texdoc lthooks` for more information.
-
-| legacy hooks        | builtin-hook                            | legacy source | note                                             |
-|---------------------|-----------------------------------------|---------------|--------------------------------------------------|
-| `\AtEndPreamble`    | `\AddToHook{begindocument/before}{...}` | etoolbox      | before `aux` file gets parsed                    |
-| `\AtBeginDocument`  | `\AddToHook{begindocument}{...}`        | built-in      | after `aux` file has been parsed                 |
-| `\AfterEndPreamble` | `\AddToHook{begindocument/end}{...}`    | etoolbox      | immediately after `\begin{document}`             |
-| `\AtEndDocument`    | `\AddToHook{enddocument}{...}`          | built-in      | at start of end{document}                        |
-| `\AfterEndDocument` | `\AddToHook{enddocument/end}{...}`      | etoolbox      | after the new `aux` has been written and re-read |
+| Legacy Environment    | Built-in alternative          | Source               | Description                                                                                      |
+|-----------------------|-------------------------------|----------------------|--------------------------------------------------------------------------------------------------|
+| `\begin{appendix}`    | `\appendix`                   | l2tabu §3.2[^l2tabu] | appendix is a switch, not an environment                                                         |
+| `\begin{eqnarray}`    | `\begin{align}...\end{align}` | l2tabu §3.3[^l2tabu] | `eqnarray` has spacing/numbering issues; `amsmath` alignments are consistent and more capable    |
+| `\begin{displaymath}` | `\[...\]`                     | l2tabu §3.3[^l2tabu] | with `amsmath`, `displaymath` is explicitly discouraged; `\[...\]` is the supported display form |
 
 ## `avoid-obsolete-packages`
 
-Checks that certain obsolete packages are not used. List from Stefan Kottwitz[^26200] and updated[^l2tabu].
+Checks that certain obsolete packages are not used. Orighinal list from Stefan Kottwitz[^26200],
+updated by `l2tabu`[^l2tabu] and custom additions:
+
+- `\CurrentFile` makes `currfile` obsolete.[^currfile]
+- `\TrimSpaces` makes `trimspaces` obsolete.
 
 | Outdated Package | Alternative      | Description                        |
 |------------------|------------------|------------------------------------|
@@ -71,6 +125,7 @@ Checks that certain obsolete packages are not used. List from Stefan Kottwitz[^2
 | caption2         | caption          | Captions.                          |
 | color            | xcolor           | Enhanced color support.            |
 | csvtools         | datatool         | CSV data.                          |
+| currfile         | None             | Use `\CurrentFile` built-in.       |
 | datetime         | datetime2        | Date/time.                         |
 | dinat            | natdin           | DIN citations.                     |
 | doublespace      | setspace         | Double spacing.                    |
@@ -121,6 +176,7 @@ Checks that certain obsolete packages are not used. List from Stefan Kottwitz[^2
 | t1enc            | fontenc          | Font encoding.                     |
 | times            | newtx            | Times fonts.                       |
 | tocstyle         | tocbasic         | Table of contents.                 |
+| trimspaces       | None             | Use `\TrimSpaces`                  |
 | twoside          | geometry         | Page layouts.                      |
 | txfonts          | newtx            | Times fonts.                       |
 | ucs              | None             | UTF8 is default.                   |
@@ -131,7 +187,12 @@ Checks that certain obsolete packages are not used. List from Stefan Kottwitz[^2
 | zefonts          | fontenc+lmodern  | Fonts.                             |
 
 [//]: # (footnotes)
+[^0]: <https://www.latex-project.org/help/documentation/usrguide.pdf>
+[^1]: <https://www.latex-project.org/help/documentation/clsguide.pdf>
+[^2]: <https://www.latex-project.org/help/documentation/lthooks-doc.pdf>
+[^3]: <https://www.latex-project.org/help/documentation/fntguide.pdf>
+[^l2tabu]: <https://ctan.org/pkg/l2tabu>
+[^currfile]: <https://ctan.org/pkg/currfile>
 [^fonts]: <https://tex.stackexchange.com/q/15361>
 [^$$]: <https://tex.stackexchange.com/q/503>
-[^l2tabu]: <https://ctan.org/pkg/l2tabu>
 [^26200]: <https://tex.stackexchange.com/a/26200>
