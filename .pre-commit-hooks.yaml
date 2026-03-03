@@ -73,7 +73,11 @@
 - id: latex-avoid-def
   name: '[tex] Avoid usage of `\def`.'
   description: 'Use `\NewDocumentCommand` instead of `\def`.'
-  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)(\\def\s*)(\\\w{2,}+(?!##|@))' # excludes single char and \def\internal@command...
+  entry: '(?x)
+          (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
+          (\\def\s*)(\\\w{2,}+(?!##|@))
+          (?![^\n]*?%\x20+tex:\x20+ignore)'
+          # excludes single char and \def\internal@command...
   language: pygrep
   types: [tex]
   exclude: '\.tikz\b'
@@ -81,20 +85,30 @@
   name: '[tex] Avoid usage of `\let`.'
   description: 'Use `\NewCommandCopy` instead of `\let`.'
   language: pygrep
-  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)(\\let\s*)(\\\w{2,}+(?!##|@))' # excludes single char and \let\internal@command...
+  entry: '(?x)
+          (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
+          (\\let\s*)(\\\w{2,}+(?!##|@))
+          (?![^\n]*?%\x20+tex:\x20+ignore)'
+          # excludes single char and \let\internal@command...
   types: [tex]
   exclude: '\.tikz\b'
 - id: latex-avoid-newcommand
   name: '[tex] Avoid usage of `\newcommand`.'
   description: 'Use `\NewDocumentCommand` instead of `\newcommand` or `\DeclareRobustCommand`.'
   language: pygrep
-  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)\\((new|renew|provide)command|DeclareRobustCommand)\b'
+  entry: '(?x)
+          (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
+          \\((new|renew|provide)command|DeclareRobustCommand)\b
+          (?![^\n]*?%\x20+tex:\x20+ignore)'
   types: [tex]
   exclude: '\.tikz\b'
 - id: latex-avoid-legacy-hooks
   name: '[tex] Avoid legacy hooks like `\AtEndPreamble`.'
   description: 'Use `\AddToHook{begindocument/before}{...}`,  instead of `\AtEndPreamble{...}`.'
-  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)\\(AtEndPreamble|AtBeginDocument|AfterEndPreamble|AtEndDocument|AfterEndDocument)\b'
+  entry: '(?x)
+          (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
+          \\(AtEndPreamble|AtBeginDocument|AfterEndPreamble|(AtEndDocument|AfterEndDocument)\b
+          (?![^\n]*?%\x20+tex:\x20+ignore)'
   types: [tex]
   language: pygrep
 - id: latex-avoid-double-dollar
@@ -102,13 +116,17 @@
   description: 'Use `\[` and `\]` or an enviroment instead of `$$`.'
   language: pygrep
   types: [tex]
-  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)(\$\$)'
+  entry: '(?x)
+          (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
+          (\$\$)
+          (?![^\n]*?%\x20+tex:\x20+ignore)'
 - id: latex-avoid-legacy-commands
   name: '[tex] Avoid legacy commands.'
   description: 'Avoid legacy commands.'
   types: [tex]
   language: pygrep
-  entry:  '(?x)(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
+  entry: '(?x)
+          (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
           \\(
               (bf|em|it|rm|sf|sl|tt|sc)
               |centerline
@@ -139,7 +157,8 @@
   description: 'Avoid legacy environments.'
   types: [tex]
   language: pygrep
-  entry:  '(?x)(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
+  entry: '(?x)
+          (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
           \\(begin|end)\{(
               appendix
               |eqnarray
@@ -149,14 +168,18 @@
 - id: latex-avoid-ifmmode
   name: '[tex] Avoid usage of `\ifmmode`.'
   description: 'Use `\TextOrMath` instead of `\ifmmode`.'
-  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)\\ifmmode\b'
+  entry: '(?x)
+          (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
+          \\ifmmode\b
+          (?![^\n]*?%\x20+tex:\x20+ignore)'
   types: [tex]
   language: pygrep
 - id: latex-avoid-legacy-options
   name: '[tex] Avoid usage of `\DeclareOption`.'
   description: 'Use `\DeclareKeys` instead of legacy options system (see usrguide/clsguide).'
   language: pygrep
-  entry:  '(?x)(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
+  entry: '(?x)
+          (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
           \\(
             DeclareOption
             |OptionNotUsed
@@ -169,7 +192,8 @@
   description: 'Avoid legacy packages.'
   language: pygrep
   types: [tex]
-  entry:  '(?x)(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
+  entry: '(?x)
+          (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
           \\(usepackage|RequirePackage)
               \s*(\[[^\]]*\])?\s*\{
                   ((\w|-)+\s*,\s*)*(
@@ -258,23 +282,35 @@
   language: pygrep
   types: [tex]
   files: '\.(sty|cls)$'
-  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)\\makeat(letter|other)\b'
+  entry: '(?x)
+          (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
+          \\makeat(letter|other)\b
+          (?![^\n]*?%\x20+tex:\x20+ignore)'
 - id: latex-avoid-manual-spacing
   name: '[tex] Avoid manual spacing commands.'
   description: "Checks for the presence of manual spacing commands."
   language: pygrep
   types: [tex]
-  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)\\[!,.:>;]'
+  entry: '(?x)
+          (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
+          \\[!,.:>;]
+          (?![^\n]*?%\x20+tex:\x20+ignore)'
 - id: latex-avoid-text-superscript
   name: '[tex] Avoid usage of `x^\text{...}`.'
   description: 'Consider defining a command instead of `^\text{...}`.'
   language: pygrep
   types: [tex]
-  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)[\_\^]\{?\\text\{\S*\w\}|\\text\{\S*\w\}[\(\[\{\\]'
+  entry: '(?x)
+          (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
+          [\_\^]\{?\\text\{\S*\w\}|\\text\{\S*\w\}[\(\[\{\\]
+          (?![^\n]*?%\x20+tex:\x20+ignore)'
 - id: latex-use-label-convention
   name: '[tex] Follow label convention "\label{<tag>:<name>}".'
   description: 'Checks if labels are of the form \label{<tag>:<name>} (no uppercase!).'
   language: pygrep
   types: [tex]
-  entry: '(?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)\\label\{(?![a-z]+:[a-z0-9_]+\})'
+  entry: '(?x)
+          (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
+          \\label\{(?![a-z]+:[a-z0-9_]+\})
+          (?![^\n]*?%\x20+tex:\x20+ignore)'
 # endregion latex-lint-extra -----------------------------------------------------------
