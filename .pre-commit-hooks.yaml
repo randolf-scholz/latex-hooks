@@ -75,7 +75,7 @@
   description: 'Use `\NewDocumentCommand` instead of `\def`.'
   entry: '(?x)
           (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
-          (\\def\s*)(\\\w{2,}+(?!##|@))
+          (\\def\s*)(\\\w{2,}+(?!\#\#|@))
           (?![^\n]*?%\x20+tex:\x20+ignore)'
           # excludes single char and \def\internal@command...
   language: pygrep
@@ -87,7 +87,7 @@
   language: pygrep
   entry: '(?x)
           (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
-          (\\let\s*)(\\\w{2,}+(?!##|@))
+          (\\let\s*)(\\\w{2,}+(?!\#\#|@))
           (?![^\n]*?%\x20+tex:\x20+ignore)'
           # excludes single char and \let\internal@command...
   types: [tex]
