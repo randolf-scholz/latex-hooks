@@ -107,7 +107,7 @@
   description: 'Use `\AddToHook{begindocument/before}{...}`,  instead of `\AtEndPreamble{...}`.'
   entry: '(?x)
           (?P<commented>^[\t ]*+|^[\t ]*+[^%\n][^\n]*?)
-          \\(AtEndPreamble|AtBeginDocument|AfterEndPreamble|(AtEndDocument|AfterEndDocument)\b
+          \\(AtEndPreamble|AtBeginDocument|AfterEndPreamble|AtEndDocument|AfterEndDocument)\b
           (?![^\n]*?%\x20+tex:\x20+ignore)'
   types: [tex]
   language: pygrep
